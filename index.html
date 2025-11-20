@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>温馨家庭厨房</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff7043;
+            --secondary-color: #4fc3f7;
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+            --success-color: #4caf50;
+            --danger-color: #f44336;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        
+        header {
+            background: 
+                url('https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/2643ea49576844b89239fe111a5d7123.png~tplv-a9rns2rl98-resize-jpeg-v1.png?rcl=202511201631039CEAF2BCAC727C8C8EAF&rk3s=8e244e95&rrcfp=8a172a1a&x-expires=1764232264&x-signature=zpsvj3%2B3QrmUgdAohZ4bdVrrvho%3D') no-repeat center top;
+            background-size: 100% 100%;
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .title-container {
+            position: relative;
+            z-index: 2;
+            /* 移除背景色和模糊效果 */
+            padding: 2rem 3rem;
+            border-radius: 15px;
+            /* 移除阴影效果 */
+        }
+        
+        .title {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 5.5rem;
+            letter-spacing: 4px;
+            text-shadow: 3px 3px 8px rgba(0,0,0,0.8);
+            position: relative;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 2rem;
+            opacity: 0.95;
+            position: relative;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+        }
+        
+        .main-container {
+            display: flex;
+            flex: 1;
+            width: 100%;
+            max-width: 100%;
+            padding: 1.5rem;
+            gap: 1.5rem;
+        }
+        
+        .main-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        /* 优化分类标签布局 - 均分宽度 */
+        .category-tabs {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            margin-bottom: 1.5rem;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            overflow: hidden;
+            width: 100%;
+        }
+        
+        .category-tab {
+            padding: 0.8rem 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            text-align: center;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.9rem;
+        }
+        
+        .category-tab:hover {
+            background-color: rgba(255, 112, 67, 0.1);
+        }
+        
+        .category-tab.active {
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+            background-color: rgba(255, 112, 67, 0.05);
+        }
+        
+        .dishes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+        
+        .dish-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 130px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .dish-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+        
+        .dish-name {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            color: #333;
+        }
+        
+        .add-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            align-self: flex-end;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(255, 112, 67, 0.4);
+        }
+        
+        .add-btn:hover {
+            background-color: #e64a19;
+            transform: scale(1.1);
+        }
+        
+        .right-sidebar {
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .order-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-height: 50vh;
+            border-top: 5px solid var(--primary-color);
+        }
+        
+        .history-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-height: 50vh;
+            border-top: 5px solid var(--secondary-color);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .order-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .order-list {
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s;
+        }
+        
+        .order-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-controls {
+            display: flex;
+            align-items: center;
+        }
+        
+        .quantity-btn {
+            background-color: #eee;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin: 0 4px;
+            transition: all 0.2s;
+            font-size: 0.8rem;
+        }
+        
+        .quantity-btn:hover {
+            background-color: #ddd;
+        }
+        
+        .quantity {
+            margin: 0 4px;
+            min-width: 18px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .submit-btn {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.8rem 1.2rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(76, 175, 80, 0.4);
+        }
+        
+        .submit-btn:hover {
+            background-color: #388e3c;
+        }
+        
+        .empty-order {
+            text-align: center;
+            color: #999;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--success-color);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+            animation: fadeInOut 3s ease-in-out;
+            font-weight: bold;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-20px); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-20px); }
+        }
+        
+        .order-count {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .order-info {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+            font-size: 0.8rem;
+            color: #666;
+            text-align: center;
+        }
+        
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .history-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .clear-history-btn {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.3rem 0.6rem;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .clear-history-btn:hover {
+            background-color: #d32f2f;
+        }
+        
+        .history-list {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        
+        .history-item {
+            padding: 0.6rem;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            transition: background-color 0.2s;
+            font-size: 0.85rem;
+        }
+        
+        .history-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        
+        .history-time {
+            font-size: 0.7rem;
+            color: #999;
+            min-width: 100px;
+        }
+        
+        .history-dishes {
+            flex-grow: 1;
+            margin-left: 0.8rem;
+        }
+        
+        .no-history {
+            text-align: center;
+            color: #999;
+            padding: 1.5rem;
+            font-size: 0.9rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1400px) {
+            .category-tabs {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .right-sidebar {
+                width: 100%;
+                flex-direction: row;
+            }
+            
+            .order-section, .history-section {
+                flex: 1;
+                max-height: 40vh;
+            }
+            
+            .title {
+                font-size: 4.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.7rem;
+            }
+            
+            .title-container {
+                padding: 1.5rem 2.5rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .category-tabs {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            header {
+                min-height: 250px;
+                padding: 2rem 1.5rem;
+            }
+            
+            .title-container {
+                padding: 1.5rem 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .category-tabs {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .right-sidebar {
+                flex-direction: column;
+            }
+            
+            .dishes-container {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .title {
+                font-size: 3.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.5rem;
+            }
+            
+            header {
+                padding: 2rem 1rem;
+                min-height: 200px;
+            }
+            
+            .title-container {
+                padding: 1rem 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .category-tabs {
+                grid-template-columns: 1fr;
+            }
+            
+            .title {
+                font-size: 2.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .main-container {
+                padding: 1rem;
+                gap: 1rem;
+            }
+            
+            .category-tab {
+                padding: 0.7rem 0.3rem;
+                font-size: 0.85rem;
+            }
+            
+            header {
+                min-height: 180px;
+                padding: 1.5rem 1rem;
+            }
+            
+            .title-container {
+                padding: 0.8rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="title-container">
+            <h1 class="title">温馨家庭厨房</h1>
+            <div class="subtitle">家的味道，爱的温度</div>
+        </div>
+    </header>
+    
+    <div class="main-container">
+        <div class="main-content">
+            <div class="category-tabs" id="categoryTabs">
+                <!-- 分类标签将通过JavaScript动态生成 -->
+            </div>
+            
+            <div class="dishes-container" id="dishesContainer">
+                <!-- 菜品卡片将通过JavaScript动态生成 -->
+            </div>
+        </div>
+        
+        <div class="right-sidebar">
+            <div class="order-section" id="orderSection">
+                <div class="order-header">
+                    <div class="order-title">
+                        <h2>点餐列表</h2>
+                        <span class="order-count" id="orderCount">0</span>
+                    </div>
+                </div>
+                
+                <div class="order-list" id="orderList">
+                    <div class="empty-order">请从菜单选择菜品</div>
+                </div>
+                
+                <button class="submit-btn" id="submitBtn">确认提交</button>
+                
+                <div class="order-info">
+                    <p>点餐结果将保留1小时</p>
+                </div>
+            </div>
+            
+            <div class="history-section">
+                <div class="history-header">
+                    <div class="history-title">
+                        <h2>点餐历史记录</h2>
+                    </div>
+                    <button class="clear-history-btn" id="clearHistoryBtn">清除记录</button>
+                </div>
+                <div class="history-list" id="historyList">
+                    <!-- 历史记录将通过JavaScript动态生成 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 菜单数据
+        const menuData = {
+            "早餐": [
+                "牛油果吐司", "素鸡腿堡", "三明治牛奶", "椰奶麦片", "油条豆浆", 
+                "土豆丝卷饼", "酸菜拌汤", "油饼", "豆腐油角", "小笼包", 
+                "蒸饺", "广东肠粉", "菜夹馍", "麻辣烫夹馍", "菜豆腐", 
+                "豆腐脑", "韭菜孜卷", "白米粥", "贝贝瓜", "红薯", 
+                "海苔饭团", "燕麦粥", "饺子锅贴"
+            ],
+            "面食": [
+                "番茄意面", "安康蒸面", "酸菜面条", "酸菜面片", "西安凉皮", 
+                "酸菜米线", "油泼拉条", "乾县驴蹄子面", "杨凌蘸水面", "麻酱酸汤面", 
+                "素炸酱面", "重庆小面", "葱油拌面", "街头炒面", "豆角焖面", 
+                "油盘凉面", "北京打卤面", "菜拌面", "麻辣拌方便面", "幸福水饺", 
+                "烩麻食", "炒麻食", "浆水鱼鱼", "什锦泡馍", "十里香馄饨", 
+                "炒米粉", "炒河粉", "臊子面", "素炒猫耳朵", "酸辣粉", "新疆炒米粉"
+            ],
+            "米饭": [
+                "菠萝炒饭", "锅巴饭", "腊肠土豆焖饭", "酸菜懒饭", "酸菜炒饭", 
+                "扬州炒饭", "老干妈炒饭", "酱油炒饭", "土豆泥拌饭", "酸豇豆炒饭", 
+                "番茄烩米饭", "外婆菜炒饭"
+            ],
+            "凉菜": [
+                "凉拌黄瓜", "苦菊核桃仁", "凉拌豆皮丝", "凉拌菠菜", "凉拌海带", 
+                "炝拌莲藕", "凉拌莴笋丝", "凉拌粉丝", "卤味素拼", "凉拌炸豆腐", 
+                "捞汁秋葵", "生腌辣椒", "米椒折耳根", "凉拌豆芽", "酸辣竹笋", 
+                "手撕杏鲍菇", "红油凉粉", "椒盐蘑菇", "凉拌腐竹", "凉拌素牛排", 
+                "芝麻汤圆球", "孜然土豆球", "凉拌豆干", "凉拌皮木耳", "凉拌金针菇", 
+                "凉拌面筋"
+            ],
+            "炒菜": [
+                "酸辣土豆片", "酸辣土豆丝", "洋芋粑粑", "泡菜魔芋皮", "酸菜软饼", 
+                "泡菜粉条", "手撕包菜", "麻婆豆腐", "小白菜炒豆腐", "老干妈豆腐", 
+                "清炒竹笋", "干锅千叶豆腐", "干锅土豆片", "耗油生菜", "蒜蓉西蓝花", 
+                "素炒山药", "清炒莲藕丝", "辣炒蒜苔粒", "清炒莴笋", "蚂蚁上树", 
+                "蒜蓉粉丝", "清炒荷兰豆", "素三鲜", "蓝莓山药", "清炒西葫芦", 
+                "油炸藕盒", "云南菌菇", "线椒洋火姜", "豆泡白菜", "锡纸金针菇", 
+                "蒜蓉茄子", "鱼香茄子", "辣子烩菜", "芹菜豆腐干", "虎皮青椒", 
+                "清炒空心菜", "洋芋擦擦", "蒜蓉油麦菜", "豆角茄子", "素炒四季豆", 
+                "干煸杏鲍菇", "辣炒酸豇豆", "辣炒腐竹", "蘸菜卷饼", "菜包饭", 
+                "浇汁炕炕馍", "干锅鹿茸菇", "辣椒面豆腐", "蒜炒冬瓜条", "辣炒青柿子", 
+                "酸辣干豆皮丝", "浇汁锅巴", "清炒丝瓜", "青豆玉米粒", "酸辣白菜", 
+                "麻辣香锅", "川渝火锅", "豇豆丁外婆菜", "青椒皮木耳丝", "蚂蚁上树", 
+                "粉条大乱炖", "辣炒上海青", "渣辣子炒豆干"
+            ],
+            "汤类": [
+                "银耳羹", "甜酒芝麻汤圆", "香葱粉丝汤", "白菜粉条豆腐汤", "番茄金针菇", 
+                "酸辣汤", "翡翠白玉羹", "冰糖雪梨", "萝卜玉米汤", "枸杞菌菇汤", 
+                "香浓素藕汤", "海带冬瓜汤", "浓郁南瓜汤", "火腿紫菜汤", "香菇豆腐丸子汤", 
+                "三鲜白菜豆腐汤", "番茄豆皮汤", "上汤山药", "水果甜汤"
+            ],
+            "甜点": [
+                "南瓜饼", "粽子", "寿司", "冰粉", "紫薯椰蓉", 
+                "豆沙糯米饼", "冰糖水果", "番茄薯条", "糯米葡萄干", "水果捞", 
+                "紫薯芒果球", "香甜蜜薯"
+            ],
+            "小吃": [
+                "炸串拌馍", "红油面筋", "孜然馍片", "腐乳锅巴", "长沙臭豆腐", 
+                "爆米花", "卤味花生", "油炸玉米串"
+            ]
+        };
+
+        // 当前选中的分类
+        let currentCategory = "早餐";
+        // 订单数据
+        let order = {};
+        // 点餐历史记录
+        let orderHistory = [];
+
+        // 初始化函数
+        function init() {
+            // 创建分类标签
+            createCategoryTabs();
+            
+            // 显示默认分类的菜品
+            showDishes(currentCategory);
+            
+            // 检查是否有保存的订单和历史记录
+            checkSavedOrder();
+            loadOrderHistory();
+            
+            // 绑定事件监听器
+            document.getElementById('submitBtn').addEventListener('click', submitOrder);
+            document.getElementById('clearHistoryBtn').addEventListener('click', clearHistory);
+        }
+
+        // 创建分类标签
+        function createCategoryTabs() {
+            const categoryTabs = document.getElementById('categoryTabs');
+            
+            Object.keys(menuData).forEach(category => {
+                const tab = document.createElement('div');
+                tab.className = 'category-tab';
+                if (category === currentCategory) {
+                    tab.classList.add('active');
+                }
+                tab.textContent = category;
+                tab.addEventListener('click', () => {
+                    // 移除所有标签的active类
+                    document.querySelectorAll('.category-tab').forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    // 为当前标签添加active类
+                    tab.classList.add('active');
+                    // 显示对应分类的菜品
+                    showDishes(category);
+                    currentCategory = category;
+                });
+                
+                categoryTabs.appendChild(tab);
+            });
+        }
+
+        // 显示指定分类的菜品
+        function showDishes(category) {
+            const dishesContainer = document.getElementById('dishesContainer');
+            dishesContainer.innerHTML = '';
+            
+            menuData[category].forEach(dish => {
+                const dishCard = document.createElement('div');
+                dishCard.className = 'dish-card';
+                
+                dishCard.innerHTML = `
+                    <div class="dish-name">${dish}</div>
+                    <button class="add-btn" data-dish="${dish}">+</button>
+                `;
+                
+                dishesContainer.appendChild(dishCard);
+            });
+            
+            // 为所有添加按钮绑定事件
+            document.querySelectorAll('.add-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const dish = e.target.getAttribute('data-dish');
+                    addToOrder(dish);
+                });
+            });
+        }
+
+        // 添加菜品到订单
+        function addToOrder(dish) {
+            if (order[dish]) {
+                order[dish]++;
+            } else {
+                order[dish] = 1;
+            }
+            
+            updateOrderDisplay();
+            
+            // 显示添加成功提示
+            showNotification(`已添加 ${dish}`);
+        }
+
+        // 更新订单显示
+        function updateOrderDisplay() {
+            const orderList = document.getElementById('orderList');
+            const orderCount = document.getElementById('orderCount');
+            
+            // 计算总数量
+            let totalCount = 0;
+            for (const dish in order) {
+                totalCount += order[dish];
+            }
+            orderCount.textContent = totalCount;
+            
+            // 清空订单列表
+            orderList.innerHTML = '';
+            
+            // 如果订单为空，显示提示
+            if (Object.keys(order).length === 0) {
+                orderList.innerHTML = '<div class="empty-order">请从菜单选择菜品</div>';
+                return;
+            }
+            
+            // 添加订单项
+            for (const dish in order) {
+                const orderItem = document.createElement('div');
+                orderItem.className = 'order-item';
+                
+                orderItem.innerHTML = `
+                    <div class="item-name">${dish}</div>
+                    <div class="item-controls">
+                        <button class="quantity-btn minus" data-dish="${dish}">-</button>
+                        <span class="quantity">${order[dish]}</span>
+                        <button class="quantity-btn plus" data-dish="${dish}">+</button>
+                    </div>
+                `;
+                
+                orderList.appendChild(orderItem);
+            }
+            
+            // 为加减按钮绑定事件
+            document.querySelectorAll('.quantity-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const dish = e.target.getAttribute('data-dish');
+                    if (e.target.classList.contains('plus')) {
+                        order[dish]++;
+                    } else if (e.target.classList.contains('minus')) {
+                        order[dish]--;
+                        if (order[dish] <= 0) {
+                            delete order[dish];
+                        }
+                    }
+                    updateOrderDisplay();
+                });
+            });
+            
+            // 保存订单到本地存储
+            saveOrder();
+        }
+
+        // 显示通知
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // 3秒后移除通知
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // 提交订单
+        function submitOrder() {
+            console.log("提交按钮被点击");
+            
+            if (Object.keys(order).length === 0) {
+                showNotification('请先选择菜品');
+                return;
+            }
+            
+            // 直接提交，无需确认
+            saveToHistory();
+            
+            // 清空当前订单
+            order = {};
+            updateOrderDisplay();
+            
+            // 显示成功提示
+            showNotification('提交成功！');
+            
+            // 清除本地存储的当前订单
+            localStorage.removeItem('familyOrder');
+        }
+
+        // 保存订单到历史记录
+        function saveToHistory() {
+            const timestamp = Date.now();
+            // 只保存菜品名称，不保存数量
+            const dishNames = Object.keys(order);
+            
+            const orderData = {
+                dishes: dishNames,
+                timestamp: timestamp,
+                timeString: new Date(timestamp).toLocaleString()
+            };
+            
+            // 添加到历史记录
+            orderHistory.unshift(orderData);
+            
+            // 只保留最近10条记录
+            if (orderHistory.length > 10) {
+                orderHistory = orderHistory.slice(0, 10);
+            }
+            
+            // 保存到本地存储
+            localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
+            
+            // 更新历史记录显示
+            displayOrderHistory();
+        }
+
+        // 显示历史记录
+        function displayOrderHistory() {
+            const historyList = document.getElementById('historyList');
+            
+            // 清空历史记录列表
+            historyList.innerHTML = '';
+            
+            // 如果没有历史记录，显示提示
+            if (orderHistory.length === 0) {
+                historyList.innerHTML = '<div class="no-history">暂无点餐历史记录</div>';
+                return;
+            }
+            
+            // 添加历史记录项
+            orderHistory.forEach((historyItem, index) => {
+                const historyElement = document.createElement('div');
+                historyElement.className = 'history-item';
+                
+                // 格式化订单内容 - 只显示菜品名称，不显示数量
+                const orderText = historyItem.dishes.join('，');
+                
+                historyElement.innerHTML = `
+                    <div class="history-time">${historyItem.timeString}</div>
+                    <div class="history-dishes">${orderText}</div>
+                `;
+                
+                historyList.appendChild(historyElement);
+            });
+        }
+
+        // 清除历史记录
+        function clearHistory() {
+            if (orderHistory.length === 0) {
+                showNotification('暂无历史记录可清除');
+                return;
+            }
+            
+            if (confirm('确定要清除所有点餐历史记录吗？')) {
+                orderHistory = [];
+                localStorage.removeItem('orderHistory');
+                displayOrderHistory();
+                showNotification('历史记录已清除');
+            }
+        }
+
+        // 加载历史记录
+        function loadOrderHistory() {
+            const savedHistory = localStorage.getItem('orderHistory');
+            if (savedHistory) {
+                const historyData = JSON.parse(savedHistory);
+                const now = Date.now();
+                const oneHour = 60 * 60 * 1000; // 1小时
+                
+                // 过滤掉超过1小时的历史记录
+                orderHistory = historyData.filter(item => now - item.timestamp < oneHour);
+                
+                // 更新本地存储
+                localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
+                
+                // 显示历史记录
+                displayOrderHistory();
+            }
+        }
+
+        // 保存订单到本地存储
+        function saveOrder() {
+            const orderData = {
+                order: order,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('familyOrder', JSON.stringify(orderData));
+        }
+
+        // 检查是否有保存的订单
+        function checkSavedOrder() {
+            const savedOrder = localStorage.getItem('familyOrder');
+            if (savedOrder) {
+                const orderData = JSON.parse(savedOrder);
+                const now = Date.now();
+                const oneHour = 60 * 60 * 1000; // 1小时
+                
+                // 如果订单在1小时内，则恢复
+                if (now - orderData.timestamp < oneHour) {
+                    order = orderData.order;
+                    updateOrderDisplay();
+                    showNotification('已恢复上次的点餐记录');
+                } else {
+                    // 超过1小时，清除订单
+                    localStorage.removeItem('familyOrder');
+                }
+            }
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
